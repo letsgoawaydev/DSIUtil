@@ -1,0 +1,334 @@
+* {
+    font-family:
+        /* "MS UI Gothic", "MS Gothic", */
+        system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    image-rendering: optimizeSpeed;
+    /* STOP SMOOTHING, GIVE ME SPEED  */
+    image-rendering: -moz-crisp-edges;
+    /* Firefox                        */
+    image-rendering: -o-crisp-edges;
+    /* Opera                          */
+    image-rendering: -webkit-optimize-contrast;
+    /* Chrome (and eventually Safari) */
+    image-rendering: pixelated;
+    /* Universal support since 2021   */
+    image-rendering: optimize-contrast;
+    /* CSS3 Proposed                  */
+    -ms-interpolation-mode: nearest-neighbor;
+    /* IE8+                           */
+
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-image: url("looping.png");
+    background-size: 64px;
+    background-repeat: repeat;
+}
+
+#app {
+    overflow: hidden;
+    height: 100%;
+}
+
+#navbar {
+    padding: 15px;
+    padding-left: 15px;
+    color: white;
+    background-color: #82658a;
+    z-index: 99;
+}
+
+#name {
+    font-size: 22px;
+}
+
+.label {
+    display: flex;
+    justify-self: center;
+    justify-content: center;
+    align-items: flex-start;
+    color: white;
+    background: linear-gradient(0.25turn, #ff000000, rgba(130, 101, 138, 0.75), rgba(130, 101, 138, 0.75), rgba(130, 101, 138, 0.75), #ff000000);
+    text-align: center;
+    width: 512px;
+    font-size: x-large;
+    padding: 5px;
+}
+
+.cambutton {
+    cursor: pointer;
+    display: flex;
+    justify-self: center;
+    justify-content: center;
+
+    border-color: rgba(128, 128, 128, 0.5);
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 4px;
+
+    outline-color: #fff;
+    outline-style: solid;
+    outline-style: solid;
+    outline-width: 4px;
+    font-size: x-large;
+    text-align: center;
+    box-shadow: 0px 6px rgba(0, 0, 0, 0.25);
+    background-color: rgba(255, 255, 255, 0.66);
+
+    user-select: none;
+    padding: 4px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+}
+
+.cambutton:active:not(.cambutton_selected) {
+    border-color: rgba(0, 0, 0, 0.5);
+    translate: 0px 4px;
+    box-shadow: none;
+
+    background-color: rgba(130, 101, 138, 0.75);
+}
+
+.cambutton_selected {
+    border-color: #9a79ae;
+    outline-color: #000000;
+    color: white;
+    background-color: rgba(130, 101, 138, 0.75);
+}
+
+.cambutton_selected:active {
+    border-color: rgba(0, 0, 0, 0.5);
+    translate: 0px 4px;
+    box-shadow: none;
+    outline-color: white;
+    color: black;
+    background-color: rgba(130, 101, 138, 0.75);
+}
+
+#dirselect {
+    display: none;
+}
+
+#app {}
+
+#initialscreen {
+    padding: 15px;
+}
+
+#preview {
+    display: flex;
+    justify-self: center;
+    justify-content: center;
+    background-color: #000000;
+    width: 640px;
+    height: 480px;
+    border-color: #FFF;
+    border-width: 8px;
+    border-style: solid;
+    user-select: none;
+
+    box-shadow: 7px 8px #414141;
+    margin-top: 15px;
+
+    margin-bottom: 32px;
+    outline: none;
+}
+
+#albumscreen {
+    display: none;
+    flex-direction: column;
+    flex-flow: column;
+
+    align-items: center;
+    height: 100%;
+}
+
+#gallery {
+    position: relative;
+    width: 100%;
+    height: 216px;
+    flex-grow: 1;
+}
+
+.griditem {
+    cursor: pointer;
+    font-kerning: none;
+    letter-spacing: 1px;
+    position: absolute;
+    width: 128px;
+    height: 128px;
+    background-color: #000000;
+    color: white;
+    user-select: none;
+    box-shadow: 4px 4px rgba(0, 0, 0, 0.5);
+    transition: left 0.1s linear allow-discrete;
+}
+
+.griditemphoto {
+    border-color: #fff;
+    border-width: 4px;
+    background-image: url("");
+    background-size: cover;
+    background-position: center;
+    border-style: solid;
+}
+
+.infogriditem {
+    border-radius: 8px;
+    font-size: 24px;
+    font-weight: 550;
+    text-align: center;
+    background-color: #38200c;
+}
+
+.datearrow {
+    font-size: 48px;
+    margin-top: 5px;
+    line-height: 32px;
+}
+.datemonthday {
+    font-size: 40px;
+    font-weight: bold;
+    margin-top: 5px;
+    line-height: 40px;
+}
+
+.dateyear {
+    font-size: 32px;
+    margin-top: 5px;
+    line-height: 32px;
+}
+
+#photoscount {
+    font-weight: bold;
+    font-size: 32px;
+}
+
+#countimagestext {
+    width: 100%;
+    position: absolute;
+    bottom: 5px;
+}
+
+#galleryslider {
+    width: 80%;
+}
+
+input[type=range] {
+    -webkit-appearance: none;
+    margin: 18px 0;
+    width: 100%;
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    background: #281810;
+    border-radius: 9px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    height: 36px;
+    width: 16px;
+    border-radius: 3px;
+    background: #fbebcb;
+    outline-color: #fff;
+    outline-style: solid;
+    outline-width: 2px;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -14px;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #281810;
+}
+
+input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    background: #281810;
+    border-radius: 9px;
+}
+
+input[type=range]::-moz-range-thumb {
+    height: 36px;
+    width: 16px;
+    border-radius: 3px;
+    background: #fbebcb;
+    outline-color: #fff;
+    outline-style: solid;
+    outline-width: 2px;
+    cursor: pointer;
+}
+
+input[type=range]::-ms-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    border-width: 16px 0;
+    color: transparent;
+}
+
+input[type=range]::-ms-fill-lower {
+    background: #281810;
+    border-radius: 2.6px;
+}
+
+input[type=range]::-ms-fill-upper {
+    background: #281810;
+    border-radius: 2.6px;
+}
+
+input[type=range]::-ms-thumb {
+    height: 36px;
+    width: 16px;
+    border-radius: 3px;
+    background: #fbebcb;
+    outline-color: #fff;
+    outline-style: solid;
+    outline-width: 2px;
+    cursor: pointer;
+}
+
+input[type=range]:focus::-ms-fill-lower {
+    background: #281810;
+}
+
+input[type=range]:focus::-ms-fill-upper {
+    background: #281810;
+}
+#previewcontainer {
+    position: relative;
+
+    width: 100%;
+}
+
+#photodate {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    pointer-events: none;
+    background-color: rgba(255, 96, 0, 0.66);
+    text-align: right;
+    color: white;
+    padding: 1px;
+    width: max-content;
+    padding-left: 8px;
+    border-bottom-left-radius: 10px;
+    font-size: x-large;
+    font-weight: normal;
+}

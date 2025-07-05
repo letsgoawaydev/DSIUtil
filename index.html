@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DSIUtil</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="navbar">
+      <div id="name">DSIUtil</div>
+    </div>
+    <div id="app">
+      <div id="albumscreen">
+        <div id="previewcontainer">
+          <img src="" id="preview" draggable="false" />
+
+          <div id="photodate">05/07/2025ㅤ18:54:13</div>
+        </div>
+        <div id="gallery">
+          <div class="griditem infogriditem" id="totalphotos">
+            <div>Total:</div>
+            <div id="photoscount">123</div>
+            <div id="countimagestext">images</div>
+          </div>
+        </div>
+        <input
+          type="range"
+          min="1"
+          max="100"
+          value="100"
+          class="slider"
+          id="galleryslider"
+        />
+      </div>
+      <div id="initialscreen">
+        <input type="file" id="dirselect" webkitdirectory directory multiple />
+        <div class="label">Select your SD card.</div>
+        <br />
+        <div class="cambutton" id="sdcardbutton">SD Card</div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
