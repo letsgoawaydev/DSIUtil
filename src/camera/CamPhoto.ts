@@ -22,10 +22,7 @@ export default class CamPhoto {
     }
 
     applyToPreview() {
-        if (this.url == null) {
-            this.url = this.createURL();
-        }
-        CameraApp.instance.preview.src = this.url;
+        CameraApp.instance.preview.applyPhoto(this);
         CameraApp.instance.photodate.setDate(new Date(this.photo.lastModified));
     }
 }

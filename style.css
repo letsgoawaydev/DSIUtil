@@ -240,11 +240,13 @@ body {
     position: absolute;
     width: 128px;
     height: 128px;
-    background-color: #000000;
+    background-color: #fff;
     color: white;
     user-select: none;
     box-shadow: 4px 4px rgba(0, 0, 0, 0.5);
-    transition: left 0.1s linear allow-discrete;
+    transition: left 0.05s linear, 
+    display 0.05s linear;
+    transition-behavior: allow-discrete;
 }
 
 .griditemphoto {
