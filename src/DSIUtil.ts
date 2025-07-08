@@ -26,6 +26,9 @@ export default class DSIUtil {
         this.galleryslider = (document.getElementById("galleryslider") as HTMLInputElement);
         this.dsicamerabutton = new DSIMenuButton(document.getElementById("dsicamerabutton") as HTMLDivElement, () => {
             (document.getElementById("menuscreen") as HTMLDivElement).style.display = "none";
+            (document.getElementById("menufooter") as HTMLDivElement).style.display = "none";
+            (document.getElementById("camerafooter") as HTMLDivElement).style.display = "inherit";
+
             (document.getElementById("sdcardscreen-camera") as HTMLDivElement).style.display = "inherit";
             (document.getElementById("sdcardscreen-camera") as HTMLDivElement).style.display = "inherit";
             document.body.style.backgroundImage = "url(\"looping.png\")";
@@ -59,6 +62,8 @@ export default class DSIUtil {
             }
             (document.getElementById("sdcardscreen-camera") as HTMLDivElement).style.display = "none";
             (document.getElementById("albumscreen") as HTMLDivElement).style.display = "flex";
+            (document.getElementById("camerafooter") as HTMLDivElement).style.display = "none";
+
             document.body.style.backgroundImage = "url(\"looping_album.png\")";
             (document.getElementById("navbar") as HTMLDivElement).style.backgroundColor = "#ff5900";
             this.photos.sort((a, b) => {
@@ -113,7 +118,14 @@ export default class DSIUtil {
     photos: Array<CamPhoto> = [];
 
     async parseFile(file: File) {
-        if (file.name.startsWith("HNI_") && file.name.endsWith(".JPG")) {
+        // authentic DSI camera app photos
+        let nintendoDSICameraPhoto = file.name.startsWith("HNI_") && file.name.endsWith(".JPG");
+        // photos taken using https://github.com/Epicpkmn11/dsi-camera 
+        // (.png), some might prefer for slightly higher quality
+        // we will handle it because we can and probably should considering this app has 0 ui for viewing photos
+        let dsiCameraHomebrewPhoto = file.name.startsWith("IMG_") && file.name.endsWith(".PNG");
+
+        if (nintendoDSICameraPhoto || dsiCameraHomebrewPhoto) {
             this.photos.push(new CamPhoto(file));
         }
     }
