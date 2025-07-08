@@ -1,6 +1,7 @@
 import CamButton from "./CamButton";
 import CamPhoto from "./CamPhoto";
 import DayGridItem from "./DayGridItem";
+import DSIMenuButton from "./DSIMenuButton";
 import GridItem from "./GridItem";
 import PhotoGridItem from "./PhotoGridItem";
 
@@ -14,6 +15,7 @@ export default class DSIUtil {
     currentGridItemSelected: number = -1;
     static griditems: Array<GridItem> = [];
     galleryslider: HTMLInputElement;
+    dsicamerabutton:DSIMenuButton;
     constructor() {
         DSIUtil.instance = this;
         this.dirselect = (document.getElementById("dirselect") as HTMLInputElement);
@@ -22,6 +24,14 @@ export default class DSIUtil {
         this.photodate = (document.getElementById("photodate") as HTMLDivElement);
 
         this.galleryslider = (document.getElementById("galleryslider") as HTMLInputElement);
+        this.dsicamerabutton = new DSIMenuButton(document.getElementById("dsicamerabutton") as HTMLDivElement, ()=>{
+            (document.getElementById("menuscreen") as HTMLDivElement).style.display = "none";
+            (document.getElementById("sdcardscreen-camera") as HTMLDivElement).style.display = "inherit";
+            (document.getElementById("sdcardscreen-camera") as HTMLDivElement).style.display = "inherit";
+            document.body.style.backgroundImage = "url(\"looping.png\")";
+            (document.getElementById("navbar") as HTMLDivElement).style.backgroundColor = "#82658a";
+
+        });
         this.sdcardbutton = new CamButton(document.getElementById("sdcardbutton") as HTMLDivElement, () => {
             this.sdcardbutton.selected = true;
             this.dirselect.click();
@@ -30,7 +40,7 @@ export default class DSIUtil {
             });
             this.dirselect.addEventListener("change", () => {
                 if (this.dirselect.files != null) {
-                    (document.getElementById("initialscreen") as HTMLDivElement).style.display = "none";
+                    (document.getElementById("sdcardscreen-camera") as HTMLDivElement).style.display = "none";
                     (document.getElementById("albumscreen") as HTMLDivElement).style.display = "flex";
                     document.body.style.backgroundImage = "url(\"looping_album.png\")";
                     (document.getElementById("navbar") as HTMLDivElement).style.backgroundColor = "#ff5900";

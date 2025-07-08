@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DSIUtil</title>
+    <title>DSiUtil</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div id="navbar">
-      <div id="name">DSIUtil</div>
+      <div id="name">DSiUtil</div>
     </div>
     <div id="app">
       <div id="albumscreen">
@@ -33,11 +33,17 @@
           id="galleryslider"
         />
       </div>
-      <div id="initialscreen">
+      <div id="sdcardscreen-camera">
         <input type="file" id="dirselect" webkitdirectory directory multiple />
         <div class="label">Select your SD card.</div>
         <br />
         <div class="cambutton" id="sdcardbutton">SD Card</div>
+      </div>
+      <div id="menuscreen">
+        <div class="dsimenubutton" id="dsicamerabutton">DSi Camera</div>
+        <br>
+        <div class="dsimenubutton" id="dsisoundbutton">DSi Sound (wip)</div>
+
       </div>
     </div>
     <script src="app.js"></script>

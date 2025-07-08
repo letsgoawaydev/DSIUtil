@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "mp4edit": "^2.0.0",
+    "music-metadata": "^11.6.0",
     "ts-loader": "^9.5.1"
   },
   "devDependencies": {

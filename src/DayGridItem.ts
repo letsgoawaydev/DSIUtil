@@ -12,7 +12,7 @@ export default class DayGridItem extends GridItem {
         
         let datemonthday = document.createElement("div");
         datemonthday.classList.add("datemonthday");
-        datemonthday.innerText = date.getDay() + "/" + date.getMonth();
+        datemonthday.innerText = date.getDate() + "/" + date.getMonth();
         elem.appendChild(datemonthday);
 
         
