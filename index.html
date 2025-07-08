@@ -45,6 +45,25 @@
         <br />
         <div class="cambutton" id="sdcardbutton">SD Card</div>
       </div>
+      <!--SOUND-->
+      <div id="soundscreen">
+        <div class="song">Song Artist - Song Title</div>
+        <img id="sounddisc" draggable="false" src="assets/textures/dsi-sound-disc.png"/>
+        <div id="sdcardscreen-sound">
+          <audio id="startupaudio" src="assets/sound/startup.wav"></audio>
+          <input
+            type="file"
+            id="dirselect-sound"
+            webkitdirectory
+            directory
+            multiple
+          />
+          <div class="label label-sound">Select your SD card.</div>
+          <br />
+          <div class="dsimenubutton" id="sdcardbutton-sound">SD Card</div>
+        </div>
+        <canvas id="waveform"></canvas>
+      </div>
     </div>
     <div id="footer">
       <div id="menufooter">
