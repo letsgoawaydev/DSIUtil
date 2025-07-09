@@ -7,9 +7,6 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div id="navbar">
-      <div id="name">DSiUtil</div>
-    </div>
     <div id="app">
       <div id="menuscreen">
         <div class="dsimenubutton" id="dsicamerabutton">DSi Camera</div>
@@ -47,8 +44,11 @@
       </div>
       <!--SOUND-->
       <div id="soundscreen">
-        <div class="song">Song Artist - Song Title</div>
-        <img id="sounddisc" draggable="false" src="assets/textures/dsi-sound-disc.png"/>
+        <div id="songsidebar">
+          <img id="sounddisc" draggable="false" src="assets/textures/dsi-sound-disc.png"/>
+          <div id="songlist">
+          </div>
+        </div>
         <div id="sdcardscreen-sound">
           <audio id="startupaudio" src="assets/sound/startup.wav"></audio>
           <input

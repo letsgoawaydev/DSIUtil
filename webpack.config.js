@@ -1,5 +1,5 @@
 const path = require('path');
-
+const webpack = require('webpack');
 module.exports = {
   entry: './src/DSIUtil.ts',
   module: {
@@ -12,14 +12,23 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    modules: ['.', 'node_modules'],
+    extensions: ['.tsx', '.ts', '.js', '.d.js'],
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer'],
+    }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser'
+    }),
+  ],
   output: {
     filename: 'app.js',
     path: path.resolve(__dirname, ''),
   },
   experiments: {
-        outputModule: true
+    outputModule: true
   },
   //mode: "development"
 };

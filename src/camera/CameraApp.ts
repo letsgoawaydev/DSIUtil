@@ -30,7 +30,6 @@ export default class CameraApp {
         (document.getElementById("sdcardscreen-camera") as HTMLDivElement).style.display = "inherit";
         (document.getElementById("sdcardscreen-camera") as HTMLDivElement).style.display = "inherit";
         document.body.style.backgroundImage = "url(\"looping.png\")";
-        (document.getElementById("navbar") as HTMLDivElement).style.backgroundColor = "#82658a";
 
         this.dirselect = (document.getElementById("dirselect") as HTMLInputElement);
 
@@ -117,8 +116,7 @@ export default class CameraApp {
         (document.getElementById("albumscreen") as HTMLDivElement).style.display = "flex";
         (document.getElementById("camerafooter") as HTMLDivElement).style.display = "none";
         document.body.style.backgroundImage = "url(\"looping_album.png\")";
-
-        (document.getElementById("navbar") as HTMLDivElement).style.backgroundColor = "#ff5900";
+        
         this.photos.sort((a, b) => {
             return a.photo.lastModified - b.photo.lastModified;
         });

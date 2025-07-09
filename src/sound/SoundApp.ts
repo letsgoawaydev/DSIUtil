@@ -1,5 +1,8 @@
-import { DirectoryHandleFunction, FileArray } from "../fs/Files";
+import { DirectoryHandleFunction, FileArray, FileWithPath, FileWithPathArray } from "../fs/Files";
 import DSIMenuButton from "../ui/menu/DSIMenuButton";
+import Song from "./Song";
+import SongListItem from "./SongListItem";
+import SongPlayer from "./SongPlayer";
 import WaveformRenderer from "./WaveformRenderer";
 
 export default class SoundApp {
@@ -8,8 +11,12 @@ export default class SoundApp {
     waveformCanvas: HTMLCanvasElement;
     waveformCanvas_renderer: WaveformRenderer;
     sdcardbutton: DSIMenuButton;
+
+    songPlayer: SongPlayer;
+
     constructor() {
         SoundApp.instance = this;
+        this.songPlayer = new SongPlayer();
         this.startupAudio = (document.getElementById("startupaudio") as HTMLAudioElement);
         this.startupAudio.volume = 1.0;
         this.startupAudio.play();
@@ -23,6 +30,7 @@ export default class SoundApp {
                         await this.getAllFiles(handle);
                     }
                     catch (e) {
+                        console.error(e);
                         alert("Please ensure you are picking the root of your SD Card and not any folders inside of it.")
                         this.sdcardbutton.selected = false;
                     }
@@ -32,7 +40,6 @@ export default class SoundApp {
             }
         });
 
-        (document.getElementById("navbar") as HTMLDivElement).style.backgroundColor = "#608098";
         (document.getElementById("sdcardscreen-sound") as HTMLDivElement).style.display = "inherit";
         (document.getElementById("soundscreen") as HTMLDivElement).style.display = "inherit";
 
@@ -44,45 +51,73 @@ export default class SoundApp {
         });
     }
 
-    static root:FileSystemDirectoryHandle;
+    static root: FileSystemDirectoryHandle;
     async getAllFiles(fh: FileSystemDirectoryHandle) {
         SoundApp.root = fh;
-        let fl: Array<File> = [];
-        for await (const file of this.getFilesRecursively(SoundApp.root)) {
-            if (file != null) {
-                if (file.name.endsWith(".mp4") || file.name.endsWith(".m4a") || file.name.endsWith(".3gp")) {
-                    console.log(file);
-                    fl.push(file);
+        let fl: Array<FileWithPath> = [];
+        for await (const obj of this.getFilesRecursively(SoundApp.root, null)) {
+            if (obj != null) {
+                if (obj.file.name.endsWith(".mp4") || obj.file.name.endsWith(".m4a") || obj.file.name.endsWith(".3gp")) {
+                    fl.push(obj);
                 }
             }
         }
         this.loadSongList(fl);
     }
 
-    async *getFilesRecursively(entry: FileSystemHandle): AsyncGenerator<File | null> {
+    async *getFilesRecursively(entry: FileSystemHandle, path: string | null): AsyncGenerator<FileWithPath> {
         // the only formats that DSi sound supports
         if (entry instanceof FileSystemFileHandle) {
+            if (path == null) {
+                path = "";
+            }
+            else {
+                path += entry.name;
+            }
             const file = await entry.getFile();
             if (file !== null) {
-                yield file;
+                yield {
+                    file: file,
+                    path: path
+                };
             }
         } else if (entry instanceof FileSystemDirectoryHandle) {
+            if (path == null) {
+                path = "";
+            }
+            else {
+                path += entry.name + "/";
+            }
             // type script what the fuck are we doing
             for await (const handle of (entry as any).values()) {
-                yield* this.getFilesRecursively(handle);
+                yield* this.getFilesRecursively(handle, path);
             }
         }
     }
 
-    loadSongList(fl: FileArray) {
+    songs: Array<Song> = [];
 
+    loadedSongs: boolean = false;
+
+    async loadSongList(fl: Array<FileWithPath>) {
+        (document.getElementById("sdcardscreen-sound") as HTMLDivElement).style.display = "none";
+
+        fl.sort((a, b) => a.path.localeCompare(b.path))
+        for (let i = 0; i < fl.length; i++) {
+            let song = new Song(fl[i]);
+            await song.loadMetadata();
+            console.log(song.meta)
+            this.songs.push(song);
+        }
+        this.loadedSongs = true;
     }
 
 
 
     draw() {
-        this.waveformCanvas.width = Math.round(window.innerWidth / 4);
-        this.waveformCanvas.style.width = window.innerWidth + "px";
+        this.waveformCanvas.width = Math.round(window.innerWidth / 8);
+        this.waveformCanvas.style.width = Math.round(window.innerWidth / 2) + "px";
+
         this.waveformCanvas.height = Math.round(this.waveformCanvas.getBoundingClientRect().height / 4);
 
         this.waveformCanvas_renderer.draw();
