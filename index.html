@@ -45,9 +45,11 @@
       <!--SOUND-->
       <div id="soundscreen">
         <div id="songsidebar">
-          <img id="sounddisc" draggable="false" src="assets/textures/dsi-sound-disc.png"/>
-          <div id="songlist">
+          <div id="metadata">
+            <img src="assets/textures/sound/metadata.png" style="display: none;" id="metadatabg"/>
+            <canvas id="metadatacanvas"></canvas>
           </div>
+          <div id="songlist"></div>
         </div>
         <div id="sdcardscreen-sound">
           <audio id="startupaudio" src="assets/sound/startup.wav"></audio>

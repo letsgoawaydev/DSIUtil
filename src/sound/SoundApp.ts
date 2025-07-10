@@ -1,5 +1,6 @@
 import { DirectoryHandleFunction, FileArray, FileWithPath, FileWithPathArray } from "../fs/Files";
 import DSIMenuButton from "../ui/menu/DSIMenuButton";
+import MetadataRenderer from "./MetadataRenderer";
 import Song from "./Song";
 import SongListItem from "./SongListItem";
 import SongPlayer from "./SongPlayer";
@@ -10,6 +11,8 @@ export default class SoundApp {
     startupAudio: HTMLAudioElement;
     waveformCanvas: HTMLCanvasElement;
     waveformCanvas_renderer: WaveformRenderer;
+    metadataCanvas: HTMLCanvasElement;
+    metadataCanvas_renderer: MetadataRenderer;
     sdcardbutton: DSIMenuButton;
 
     songPlayer: SongPlayer;
@@ -22,6 +25,8 @@ export default class SoundApp {
         this.startupAudio.play();
         this.waveformCanvas = (document.getElementById("waveform") as HTMLCanvasElement);
         this.waveformCanvas_renderer = new WaveformRenderer(this.waveformCanvas, this.startupAudio);
+        this.metadataCanvas = (document.getElementById("metadatacanvas") as HTMLCanvasElement);
+        this.metadataCanvas_renderer = new MetadataRenderer(this.metadataCanvas);
         this.sdcardbutton = new DSIMenuButton(document.getElementById("sdcardbutton-sound") as HTMLDivElement, () => {
             if ("showDirectoryPicker" in window) {
                 // what are we doing bro
@@ -55,7 +60,7 @@ export default class SoundApp {
     async getAllFiles(fh: FileSystemDirectoryHandle) {
         SoundApp.root = fh;
         let fl: Array<FileWithPath> = [];
-        for await (const obj of this.getFilesRecursively(SoundApp.root, null)) {
+        for await (const obj of this.getFilesRecursively(SoundApp.root, null, null)) {
             if (obj != null) {
                 if (obj.file.name.endsWith(".mp4") || obj.file.name.endsWith(".m4a") || obj.file.name.endsWith(".3gp")) {
                     fl.push(obj);
@@ -65,7 +70,9 @@ export default class SoundApp {
         this.loadSongList(fl);
     }
 
-    async *getFilesRecursively(entry: FileSystemHandle, path: string | null): AsyncGenerator<FileWithPath> {
+    folders: Array<FileSystemDirectoryHandle> = [];
+
+    async *getFilesRecursively(entry: FileSystemHandle, path: string | null, parent: FileSystemDirectoryHandle | null): AsyncGenerator<FileWithPath> {
         // the only formats that DSi sound supports
         if (entry instanceof FileSystemFileHandle) {
             if (path == null) {
@@ -78,7 +85,8 @@ export default class SoundApp {
             if (file !== null) {
                 yield {
                     file: file,
-                    path: path
+                    path: path,
+                    parent: parent
                 };
             }
         } else if (entry instanceof FileSystemDirectoryHandle) {
@@ -90,7 +98,7 @@ export default class SoundApp {
             }
             // type script what the fuck are we doing
             for await (const handle of (entry as any).values()) {
-                yield* this.getFilesRecursively(handle, path);
+                yield* this.getFilesRecursively(handle, path, entry);
             }
         }
     }
@@ -102,25 +110,34 @@ export default class SoundApp {
     async loadSongList(fl: Array<FileWithPath>) {
         (document.getElementById("sdcardscreen-sound") as HTMLDivElement).style.display = "none";
 
-        fl.sort((a, b) => a.path.localeCompare(b.path))
         for (let i = 0; i < fl.length; i++) {
             let song = new Song(fl[i]);
             await song.loadMetadata();
             console.log(song.meta)
             this.songs.push(song);
         }
+        this.songs.sort((a, b) => {
+            // sort by album like the DSi does
+            if (a.meta != null && b.meta != null) {
+                if (a.meta.common.album != null && b.meta.common.album != null) {
+                    return a.meta.common.album.localeCompare(b.meta.common.album);
+                }
+            }
+            return a.path.localeCompare(b.path);
+        })
+        this.songs.forEach((song) => {
+            new SongListItem(song);
+        });
         this.loadedSongs = true;
     }
 
 
 
     draw() {
-        this.waveformCanvas.width = Math.round(window.innerWidth / 8);
-        this.waveformCanvas.style.width = Math.round(window.innerWidth / 2) + "px";
-
-        this.waveformCanvas.height = Math.round(this.waveformCanvas.getBoundingClientRect().height / 4);
-
         this.waveformCanvas_renderer.draw();
+
+        this.metadataCanvas_renderer.draw();
+
         requestAnimationFrame(() => {
             SoundApp.instance.draw();
         });

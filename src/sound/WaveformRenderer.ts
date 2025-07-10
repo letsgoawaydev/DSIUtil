@@ -1,3 +1,5 @@
+import SoundApp from "./SoundApp";
+
 export default class WaveformRenderer {
     canvas: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D;
@@ -12,7 +14,12 @@ export default class WaveformRenderer {
         this.HEIGHT = this.canvas.height;
         this.WIDTH = this.canvas.width;
         this.ctx.imageSmoothingEnabled = false;
-
+        this.canvas.addEventListener("contextmenu", (ev) => {
+            ev.preventDefault();
+        });
+        this.canvas.addEventListener("mouseover", (ev) => {
+            SoundApp.instance.metadataCanvas_renderer.setSong(SoundApp.instance.songPlayer.song);
+        });
     }
 
     audio: HTMLMediaElement | null = null;
@@ -32,6 +39,10 @@ export default class WaveformRenderer {
         this.dataArray = new Uint8Array(this.bufferLength);
     }
     draw() {
+        this.canvas.width = Math.round(window.innerWidth / 8);
+        this.canvas.style.width = Math.round(window.innerWidth / 2) + "px";
+
+        this.canvas.height = Math.round(this.canvas.getBoundingClientRect().height / 4);
         this.HEIGHT = this.canvas.height;
         this.WIDTH = this.canvas.width;
         this.ctx.clearRect(0, 0, this.WIDTH, this.HEIGHT);

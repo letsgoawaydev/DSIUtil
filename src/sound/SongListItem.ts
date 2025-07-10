@@ -8,7 +8,16 @@ export default class SongListItem extends ListItem {
     constructor(song: Song) {
         super();
         this.song = song;
-        this.text.innerText = song.path;
+        if (song.meta != null && song.meta.common.title != null) {
+            this.text.innerText = song.meta.common.title;
+        }
+        else {
+            this.text.innerText = song.path;
+        }
+
+        this.div.addEventListener("mouseover", (ev) => {
+            SoundApp.instance.metadataCanvas_renderer.setSong(this.song);
+        });
         this.div.addEventListener("click", (ev) => {
             console.log("trying to play song")
 

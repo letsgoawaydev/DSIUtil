@@ -14,7 +14,8 @@ export interface FileWithPathArray {
 
 export interface FileWithPath {
     file: File,
-    path: string
+    path: string,
+    parent: FileSystemDirectoryHandle | null
 }
 
 export default class Files {
