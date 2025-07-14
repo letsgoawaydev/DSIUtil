@@ -14,10 +14,11 @@ export interface FileWithPathArray {
 
 export interface FileWithPath {
     file: File,
+    handle: FileSystemFileHandle | null,
     path: string,
     parent: FileSystemDirectoryHandle | null
 }
 
 export default class Files {
-    
+
 }

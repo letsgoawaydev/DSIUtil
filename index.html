@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DSiUtil</title>
+    <link
+      rel="preload"
+      href="assets/fonts/dsifont.otf"
+      as="font"
+      type="font/otf"
+      crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -44,27 +51,145 @@
       </div>
       <!--SOUND-->
       <div id="soundscreen">
+        <div id="soundpopupbg">
+          <div id="soundpopup">
+            <div id="soundpopup-title">Edit Metadata</div>
+            <div id="textinputwindow">
+              <label for="textinput-sound">
+                <img
+                  src="assets/textures/sound/folder.png"
+                  style="padding-left: 1px; padding-right: 1px"
+                  id="textinput-img"
+                />
+              </label>
+              <input
+                type="text"
+                placeholder="New Folder"
+                autocomplete="off"
+                id="textinput-sound"
+              />
+            </div>
+            <div id="songinputwindow">
+              <label for="textinput-sound">
+                <img
+                  src="assets/textures/sound/music.png"
+                  style="padding-left: 1px; padding-right: 1px"
+                  id="songinput-img"
+                />
+              </label>
+              <input
+                type="file"
+                multiple
+                id="songinput"
+              />
+            </div>
+            <div id="metadatawindow">
+              <div>
+                <label for="metadata_title">
+                  <img
+                    src="assets/textures/sound/music.png"
+                    style="position: relative"
+                  />
+                </label>
+                <input
+                  type="text"
+                  placeholder="Title"
+                  id="metadata_title"
+                  autocomplete="off"
+                />
+              </div>
+              <div>
+                <label for="metadata_artist">
+                  <img
+                    src="assets/textures/sound/artist.png"
+                    style="padding-left: 1px; padding-right: 1px"
+                  />
+                </label>
+                <input type="text" placeholder="Artist" id="metadata_artist" />
+              </div>
+              <div>
+                <label for="metadata_album">
+                  <img
+                    src="assets/textures/sound/album.png"
+                    style="position: relative"
+                  />
+                </label>
+                <input type="text" placeholder="Album" id="metadata_album" />
+              </div>
+              <div id="metadata_track">
+                <label for="metadata_track_no">Track: </label>
+                <input
+                  type="number"
+                  placeholder="#"
+                  id="metadata_track_no"
+                  onInput="this.value = this.value.slice(0, 4)"
+                  maxlength="4"
+                  min="1"
+                />
+                <label for="metadata_track_no"> / </label>
+                <input
+                  type="number"
+                  placeholder="#"
+                  id="metadata_track_of"
+                  onInput="this.value = this.value.slice(0, 4)"
+                  maxlength="4"
+                  min="1"
+                />
+              </div>
+              <div>
+                <input
+                  type="number"
+                  placeholder="Year"
+                  id="metadata_year"
+                  min="0"
+                  max="9999"
+                  onInput="this.value = this.value.slice(0, 4)"
+                />
+              </div>
+            </div>
+            <div id="progresswindow">
+              <progress id="conversionprogress" value="0" max="1000"></progress>
+            </div>
+            <div id="soundpopup_buttons"></div>
+          </div>
+        </div>
+        <div id="playingsong">
+          <div id="navbar">
+            <button id="navbar_file">File</button>
+            <button id="navbar_edit">Edit</button>
+            <button id="navbar_view">View</button>
+          </div>
+
+          <canvas id="waveform"></canvas>
+        </div>
         <div id="songsidebar">
           <div id="metadata">
-            <img src="assets/textures/sound/metadata.png" style="display: none;" id="metadatabg"/>
+            <img
+              src="assets/textures/sound/metadata.png"
+              style="display: none"
+              id="metadatabg"
+            />
             <canvas id="metadatacanvas"></canvas>
           </div>
-          <div id="songlist"></div>
+
+          <div id="songlist">
+            <audio id="startupaudio" src="assets/sound/startup.wav"></audio>
+            <div id="sdcardscreen-sound">
+              <input
+                type="file"
+                id="dirselect-sound"
+                webkitdirectory
+                directory
+                multiple
+              />
+              <div class="label label-sound" id="selectsdcard-sound">
+                Select your SD card.
+              </div>
+              <br />
+              <div class="dsimenubutton" id="sdcardbutton-sound">SD Card</div>
+            </div>
+          </div>
         </div>
-        <div id="sdcardscreen-sound">
-          <audio id="startupaudio" src="assets/sound/startup.wav"></audio>
-          <input
-            type="file"
-            id="dirselect-sound"
-            webkitdirectory
-            directory
-            multiple
-          />
-          <div class="label label-sound">Select your SD card.</div>
-          <br />
-          <div class="dsimenubutton" id="sdcardbutton-sound">SD Card</div>
-        </div>
-        <canvas id="waveform"></canvas>
       </div>
     </div>
     <div id="footer">
@@ -86,6 +211,13 @@
         </p>
       </div>
     </div>
-    <script src="app.js"></script>
+    <div id="ctxmenu" style="display: none">
+      <div id="ctxbox">
+        <div class="ctxitem" onclick="">test</div>
+        <div class="ctxitem" onclick="">test</div>
+        <div class="ctxitem" onclick="">test</div>
+      </div>
+    </div>
+    <script src="app.js" type="module"></script>
   </body>
 </html>

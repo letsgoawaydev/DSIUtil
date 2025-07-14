@@ -1,3 +1,4 @@
+import Song from "./Song";
 import SoundApp from "./SoundApp";
 
 export default class WaveformRenderer {
@@ -9,7 +10,7 @@ export default class WaveformRenderer {
         this.canvas = canvas;
         this.ctx = (canvas.getContext("2d") as CanvasRenderingContext2D);
         if (audio != null) {
-            this.initialize(audio);
+            this.initialize(audio, null);
         }
         this.HEIGHT = this.canvas.height;
         this.WIDTH = this.canvas.width;
@@ -28,15 +29,18 @@ export default class WaveformRenderer {
     source: MediaElementAudioSourceNode | null = null;
     bufferLength: number = -1;
     dataArray: Uint8Array<ArrayBuffer> | null = null;
-    initialize(audio: HTMLMediaElement) {
+    initialize(audio: HTMLMediaElement, song: Song | null) {
         this.audio = audio;
         this.audioCtx = new AudioContext();
         this.analyser = this.audioCtx.createAnalyser();
         this.source = this.audioCtx.createMediaElementSource(audio);
         this.source.connect(this.analyser);
         this.analyser.connect(this.audioCtx.destination);
-        this.bufferLength = this.analyser.frequencyBinCount;
+        this.bufferLength = 512;
         this.dataArray = new Uint8Array(this.bufferLength);
+    }
+    clear() {
+        this.ctx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
     }
     draw() {
         this.canvas.width = Math.round(window.innerWidth / 8);
@@ -45,7 +49,7 @@ export default class WaveformRenderer {
         this.canvas.height = Math.round(this.canvas.getBoundingClientRect().height / 4);
         this.HEIGHT = this.canvas.height;
         this.WIDTH = this.canvas.width;
-        this.ctx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
+        this.clear();
         this.renderWaveform();
     }
 

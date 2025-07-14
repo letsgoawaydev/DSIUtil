@@ -14,15 +14,18 @@ export default class DSIUtil {
         DSIUtil.instance = this;
 
         this.dsicamerabutton = new DSIMenuButton(document.getElementById("dsicamerabutton") as HTMLDivElement, () => {
-            (document.getElementById("menuscreen") as HTMLDivElement).style.display = "none";
-            (document.getElementById("menufooter") as HTMLDivElement).style.display = "none";
+            this.hideMenu();
             this.camera = new CameraApp();
         });
         this.dsisoundbutton = new DSIMenuButton(document.getElementById("dsisoundbutton") as HTMLDivElement, () => {
-            //(document.getElementById("menuscreen") as HTMLDivElement).style.display = "none";
-            //(document.getElementById("menufooter") as HTMLDivElement).style.display = "none";
-            //this.sound = new SoundApp();
+        //    this.hideMenu();
+        //    this.sound = new SoundApp();
         });
     };
+
+    hideMenu() {
+        (document.getElementById("menuscreen") as HTMLDivElement).style.display = "none";
+        (document.getElementById("menufooter") as HTMLDivElement).style.display = "none";
+    }
 }
 let app = new DSIUtil();

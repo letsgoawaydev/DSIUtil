@@ -1,5 +1,7 @@
 import { IAudioMetadata } from "music-metadata-browser";
 import Song from "./Song";
+import SoundApp from "./SoundApp";
+import path from "path";
 
 export default class MetadataRenderer {
     canvas: HTMLCanvasElement;
@@ -20,6 +22,7 @@ export default class MetadataRenderer {
 
     setSong(song: Song | null) {
         this.song = song;
+        this.draw();
     }
 
 
@@ -28,10 +31,10 @@ export default class MetadataRenderer {
         this.canvas.height = this.HEIGHT;
         this.ctx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
 
-        this.canvas.style.height = `${Math.round(window.innerHeight / 2)}px`;
+        //    this.canvas.style.height = `${Math.round(window.innerHeight / 2)}px`;
         this.ctx.drawImage(this.metadatabg, 0, 0);
 
-        this.ctx.font = "14px DSIFont";
+        this.ctx.font = "16px DSIFont";
         this.ctx.fontKerning = "none";
         this.ctx.textBaseline = "hanging";
 
@@ -44,13 +47,13 @@ export default class MetadataRenderer {
         this.ctx.fillStyle = "#000";
 
         // Song Title
-        this.ctx.fillText(this.getTitleText(), 52, offset + space * 1);
+        this.drawText(this.getTitleText(), 52, offset + space * 1);
 
         // Song Artist
-        this.ctx.fillText(this.getArtistText(), 52, offset + space * 2);
+        this.drawText(this.getArtistText(), 52, offset + space * 2);
 
         // Song Album
-        this.ctx.fillText(this.getAlbumText(), 52, offset + space * 3);
+        this.drawText(this.getAlbumText(), 52, offset + space * 3);
 
         // Song Track
         this.ctx.fillText(this.getTrackText(), 52, offset + space * 4);
@@ -60,8 +63,34 @@ export default class MetadataRenderer {
 
     }
 
-    getFolderText():string {
-        if (this.song != null && this.song.parent != null) {
+    drawText(text: string, x: number, y: number) {
+        let metrics: TextMetrics = this.ctx.measureText(text);
+        if (x + metrics.width > this.WIDTH) {
+            let displayedperecentage: number = (this.WIDTH - x) / (metrics.width);
+            let cutoff = Math.floor((text.length - 1) * displayedperecentage);
+
+            let cutofftext = text.substring(0, cutoff);
+            // Ellipsis is probably more accurate than ... tbh
+            let dotmetrics: TextMetrics = this.ctx.measureText("…");
+            let dotdotdotcutoff: number = -1;
+            for (let i = 0; i < 5; i++) {
+                let cutoffmetrics = this.ctx.measureText(cutofftext.substring((cutofftext.length) - i));
+                if (cutoffmetrics.width > dotmetrics.width) {
+                    dotdotdotcutoff = i-1;
+                    break;
+                }
+            }
+
+            cutofftext = cutofftext.substring(0, cutofftext.length - dotdotdotcutoff);
+
+            text = cutofftext + "...";
+        }
+        this.ctx.fillText(text, x, y);
+    }
+
+
+    getFolderText(): string {
+        if (this.song != null && this.song.parent != null && this.song.parent != SoundApp.root) {
             return this.song.parent.name;
         }
         else {
@@ -69,13 +98,17 @@ export default class MetadataRenderer {
         }
     }
 
-    getTitleText():string {
+    getTitleText(): string {
         if (this.song != null) {
             if (this.song.meta != null && this.song.meta.common.title != null) {
                 return this.song.meta.common.title;
             }
             else {
-                return this.song.file.name.substring(0, this.song.file.name.length - 4);
+                let name = this.song.file.name.replace(path.extname(this.song.file.name), "");
+                if (name.length > 23) {
+                    return name.substring(0, 23) + "...";
+                }
+                return this.song.file.name.replace(path.extname(this.song.file.name), "");
             }
         }
         else {
@@ -83,7 +116,7 @@ export default class MetadataRenderer {
         }
     }
 
-    getArtistText():string {
+    getArtistText(): string {
         if (this.song != null && this.song.meta != null && this.song.meta.common.artist != null) {
             return this.song.meta.common.artist;
         }
@@ -93,7 +126,7 @@ export default class MetadataRenderer {
     }
 
 
-    getAlbumText():string {
+    getAlbumText(): string {
         if (this.song != null && this.song.meta != null && this.song.meta.common.album != null) {
             return this.song.meta.common.album;
         }
@@ -102,19 +135,18 @@ export default class MetadataRenderer {
         }
     }
 
-    getTrackText():string {
+    getTrackText(): string {
         if (this.song != null && this.song.meta != null && this.song.meta.common.track != null) {
             let noString = this.song.meta.common.track.no == null ? "-" : this.song.meta.common.track.no;
             let ofString = this.song.meta.common.track.of == null ? "-" : this.song.meta.common.track.of;
-
-            return noString + " / " + ofString;
+            return "Track " + noString + " / " + ofString;
         }
         else {
             return "- / -";
         }
     }
 
-    getYearText():string {
+    getYearText(): string {
         if (this.song != null && this.song.meta != null && this.song.meta.common.year != null) {
             return this.song.meta.common.year + "";
         }
