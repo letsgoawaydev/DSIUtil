@@ -18,8 +18,13 @@ export default class DSIUtil {
             this.camera = new CameraApp();
         });
         this.dsisoundbutton = new DSIMenuButton(document.getElementById("dsisoundbutton") as HTMLDivElement, () => {
-            this.hideMenu();
-            this.sound = new SoundApp();
+            if ("chrome" in window) {
+                this.hideMenu();
+                this.sound = new SoundApp();
+            }
+            else {
+                alert("Sorry, DSi Sound file uploading only works with Chromium browsers. (e.g Google Chrome, Microsoft Edge). \n This is a limitation of the browsers engine you are using and cannot be fixed for your browser.");
+            }
         });
     };
 
