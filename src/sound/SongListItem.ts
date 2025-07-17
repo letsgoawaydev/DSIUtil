@@ -20,6 +20,27 @@ export default class SongListItem extends ListItem {
 
             SoundApp.instance.songPlayer.play(this.song);
         })
+
+        this.div.addEventListener("contextmenu", (ev) => {
+            ev.preventDefault();
+            if (this.song.handle != null) {
+                SoundApp.instance.contextMenu.show([{
+                    text: "Delete",
+                    onselect: async () => {
+                        if (confirm(`Are you sure you want to delete "` + this.song.file.name + `"? This song will be permanently removed.`)) {
+                            // non standard so we have to do this
+                            (this.song.handle as any).remove();
+                            SoundApp.instance.songs.splice(SoundApp.instance.songs.indexOf(this.song), 1);
+                            this.div.remove();
+                            await SoundApp.instance.getAllFiles(SoundApp.root);
+                            if (this.song.parent != null) {
+                                SoundApp.instance.list.loadSongs(this.song.parent);
+                            }
+                        }
+                    }
+                }], this.div.getBoundingClientRect().x, this.div.getBoundingClientRect().y);
+            }
+        })
     }
 
     async loadMeta() {

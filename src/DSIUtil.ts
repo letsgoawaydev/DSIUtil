@@ -18,8 +18,8 @@ export default class DSIUtil {
             this.camera = new CameraApp();
         });
         this.dsisoundbutton = new DSIMenuButton(document.getElementById("dsisoundbutton") as HTMLDivElement, () => {
-        //    this.hideMenu();
-        //    this.sound = new SoundApp();
+            this.hideMenu();
+            this.sound = new SoundApp();
         });
     };
 

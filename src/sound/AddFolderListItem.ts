@@ -15,5 +15,7 @@ export default class AddFolderListItem extends ListItem {
             SoundApp.instance.sortParents();
             SoundApp.instance.list.loadFolders();
         });
+
+        
     }
 }

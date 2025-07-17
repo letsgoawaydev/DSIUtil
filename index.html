@@ -18,7 +18,7 @@
       <div id="menuscreen">
         <div class="dsimenubutton" id="dsicamerabutton">DSi Camera</div>
         <br />
-        <div class="dsimenubutton" id="dsisoundbutton">DSi Sound (wip)</div>
+        <div class="dsimenubutton" id="dsisoundbutton">DSi Sound (early alpha)</div>
       </div>
       <!--CAMERA-->
       <div id="albumscreen">
@@ -45,7 +45,7 @@
       </div>
       <div id="sdcardscreen-camera">
         <input type="file" id="dirselect" webkitdirectory directory multiple />
-        <div class="label">Select your SD card.</div>
+        <div class="label">Select the root of your SD card. (eg. D:\)</div>
         <br />
         <div class="cambutton" id="sdcardbutton">SD Card</div>
       </div>
@@ -155,9 +155,7 @@
         </div>
         <div id="playingsong">
           <div id="navbar">
-            <button id="navbar_file">File</button>
             <button id="navbar_edit">Edit</button>
-            <button id="navbar_view">View</button>
           </div>
 
           <canvas id="waveform"></canvas>
@@ -183,7 +181,7 @@
                 multiple
               />
               <div class="label label-sound" id="selectsdcard-sound">
-                Select your SD card.
+                Select the root of your SD card. (eg. D:\)
               </div>
               <br />
               <div class="dsimenubutton" id="sdcardbutton-sound">SD Card</div>
@@ -218,6 +216,6 @@
         <div class="ctxitem" onclick="">test</div>
       </div>
     </div>
-    <script src="app.js" type="module"></script>
+    <script src="app.js?v1.0" type="module"></script>
   </body>
 </html>

@@ -348,25 +348,10 @@ export default class SoundApp {
             if (song.parent != null && song.parent != SoundApp.root && !this.parents.includes(song.parent)) {
                 this.parents.push(song.parent);
             }
-            await song.loadMetadata();
+           // await song.loadMetadata();
             this.songs.push(song);
         }
         this.sortParents();
-        this.songs.sort((a, b) => {
-            // sort by album like the DSi does
-            if (a.meta != null && b.meta != null) {
-                if (a.meta.common.album != null && b.meta.common.album != null) {
-                    return a.meta.common.album.localeCompare(b.meta.common.album);
-                }
-            }
-            return a.path.localeCompare(b.path);
-        });
-        this.songs.sort((a, b) => {
-            if (a.meta != null && b.meta != null && a.meta.common.track.no != null && b.meta.common.track.no != null) {
-                return a.meta.common.track.no - b.meta.common.track.no;
-            }
-            return 0;
-        });
         this.loadedSongs = true;
 
         this.list.loadFolders();

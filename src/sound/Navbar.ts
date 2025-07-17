@@ -1,11 +1,12 @@
 import SoundApp from "./SoundApp";
 
 export default class Navbar {
-    file: HTMLDivElement;
+    //file: HTMLDivElement;
     edit: HTMLDivElement;
 
     constructor() {
-        this.file = (document.getElementById("navbar_file") as HTMLDivElement);
+        //this.file = (document.getElementById("navbar_file") as HTMLDivElement);
+        /*
         this.file.addEventListener("click", () => {
             SoundApp.instance.contextMenu.show([
                 {
@@ -20,6 +21,7 @@ export default class Navbar {
                 }
             ], this.file.getBoundingClientRect().x + 10, this.file.getBoundingClientRect().y + this.file.getBoundingClientRect().height)
         });
+        */
         this.edit = (document.getElementById("navbar_edit") as HTMLDivElement);
         this.edit.addEventListener("click", () => {
             if (SoundApp.instance.songPlayer.song != null) {

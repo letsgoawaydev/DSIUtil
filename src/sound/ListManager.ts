@@ -55,9 +55,10 @@ export default class ListManager {
         songs.forEach((song) => {
             this.addItem(new SongListItem(song))
         });
-        this.addItem(new AddSongListItem());
-        this.addItem(new AddSongListItem("m4a"));
-
+        if (this.parent !== SoundApp.root) {
+            this.addItem(new AddSongListItem());
+            this.addItem(new AddSongListItem("m4a"));
+        }
         this.generate();
     }
 
