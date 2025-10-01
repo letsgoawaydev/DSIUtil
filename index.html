@@ -18,15 +18,29 @@
       <div id="menuscreen">
         <div class="dsimenubutton" id="dsicamerabutton">DSi Camera</div>
         <br />
-        <div class="dsimenubutton" id="dsisoundbutton">DSi Sound (early alpha)</div>
+        <div class="dsimenubutton" id="dsisoundbutton">
+          DSi Sound (early alpha)
+        </div>
       </div>
       <!--CAMERA-->
       <div id="albumscreen">
         <div id="previewcontainer">
-          <img src="" id="preview" draggable="false" />
+          <div id="buttons">
+            <div class="dsimenubutton" id="rotatebutton">↻ Rotate Photo</div>
+            <br>
+            <div class="dsimenubutton" id="downloadbutton">Download Photo</div>
+
+          </div>
+          <div id="imagecontainer">
+            <img src="" id="preview" draggable="false" />
+          </div>
+          <div id="previewspacer">
+
+          </div>
 
           <div id="photodate">05/07/2025ㅤ18:54:13</div>
         </div>
+
         <div id="gallery">
           <div class="griditem infogriditem" id="totalphotos">
             <div>Total:</div>
@@ -34,6 +48,7 @@
             <div id="countimagestext">images</div>
           </div>
         </div>
+
         <input
           type="range"
           min="1"
@@ -77,11 +92,7 @@
                   id="songinput-img"
                 />
               </label>
-              <input
-                type="file"
-                multiple
-                id="songinput"
-              />
+              <input type="file" multiple id="songinput" />
             </div>
             <div id="metadatawindow">
               <div>

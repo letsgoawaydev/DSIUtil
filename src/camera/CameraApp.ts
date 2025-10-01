@@ -19,6 +19,12 @@ export default class CameraApp {
     currentGridItemSelected: number = -1;
     static griditems: Array<GridItem> = [];
     galleryslider: HTMLInputElement;
+
+
+    // buttons
+    rotatebutton: CamButton;
+    downloadbutton: CamButton;
+
     constructor() {
         CameraApp.instance = this;
         if (!("chrome" in window)) {
@@ -40,6 +46,16 @@ export default class CameraApp {
         this.sdcardbutton = new CamButton(document.getElementById("sdcardbutton") as HTMLDivElement, () => {
             this.sdcardbutton.selected = true;
             this.filePick();
+        });
+
+
+        this.rotatebutton = new DSIMenuButton(document.getElementById("rotatebutton") as HTMLDivElement, () => {
+            this.preview.angle += 90;
+            this.preview.updateAngle();
+        });
+
+        this.downloadbutton = new DSIMenuButton(document.getElementById("downloadbutton") as HTMLDivElement, () => {
+            this.preview.download();
         });
     };
 
@@ -116,7 +132,7 @@ export default class CameraApp {
         (document.getElementById("albumscreen") as HTMLDivElement).style.display = "flex";
         (document.getElementById("camerafooter") as HTMLDivElement).style.display = "none";
         document.body.style.backgroundImage = "url(\"looping_album.png\")";
-        
+
         this.photos.sort((a, b) => {
             return a.photo.lastModified - b.photo.lastModified;
         });
