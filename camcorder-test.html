@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <input type="file" id="fileInput" />
+    <canvas id="canvas" width="256" height="192"></canvas>
+
+    <script>
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      document
+        .getElementById("fileInput")
+        .addEventListener("change", async (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+
+          const buffer = await file.arrayBuffer();
+          const view = new DataView(buffer);
+
+          const width = 256,
+            height = 192,
+            frameSize = width * height * 2;
+          let offset = 0;
+          const frames = [];
+
+          while (offset + frameSize + 4 <= buffer.byteLength) {
+            const imgData = ctx.createImageData(width, height);
+            let p = 0;
+
+            for (let j = 0; j < frameSize; j += 2) {
+              const val = view.getUint16(offset + j, true);
+              const r = (val & 0x1f) << 3;
+              const g = ((val >> 5) & 0x1f) << 3;
+              const b = ((val >> 10) & 0x1f) << 3;
+
+              imgData.data[p++] = r;
+              imgData.data[p++] = g;
+              imgData.data[p++] = b;
+              imgData.data[p++] = 255;
+            }
+
+            offset += frameSize;
+
+            const delay = view.getUint32(offset, true);
+            console.log(delay);
+
+            offset += 4;
+
+            frames.push({ imgData, delay });
+          }
+
+          console.log(`Decoded ${frames.length} frames`);
+          let i = 0;
+          function playFrame() {
+            ctx.putImageData(frames[i].imgData, 0, 0);
+            let speed = 20.0;
+            let delay = frames[i].delay / 33000 / speed;
+            setTimeout(() => {
+              i = (i + 1) % frames.length;
+              playFrame();
+            }, delay);
+            console.log("FPS:" + 1000 / delay);
+          }
+          playFrame();
+        });
+    </script>
+  </body>
+</html>
