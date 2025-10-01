@@ -164,14 +164,19 @@ export default class CameraApp {
         this.currentGridItemSelected = id;
         this.galleryslider.valueAsNumber = this.currentGridItemSelected;
         let item = CameraApp.griditems[id];
+        this.preview.angle = 0;
+        this.preview.updateAngle();
         if (item instanceof PhotoGridItem) {
             this.preview.img.style.opacity = "1";
             this.photodate.div.style.opacity = "1";
+            (document.getElementById("buttons") as HTMLDivElement).style.opacity = "1";
+
 
             item.photo.applyToPreview();
         } else {
             this.photodate.div.style.opacity = "0";
             this.preview.img.style.opacity = "0";
+            (document.getElementById("buttons") as HTMLDivElement).style.opacity = "0";
         }
     }
 
